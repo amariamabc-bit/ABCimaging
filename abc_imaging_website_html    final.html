@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABC Imaging</title>
+  <style>
+    :root {
+      --orange: #f97316;
+      --orange-dark: #ea580c;
+      --text: #1b1b1b;
+      --bg-soft: #fff7ed;
+      --line: rgba(249, 115, 22, 0.15);
+      --shadow: 0 12px 40px rgba(249, 115, 22, 0.08);
+      --shadow-strong: 0 30px 90px rgba(249, 115, 22, 0.16);
+      --radius-xl: 2rem;
+      --radius-lg: 1.5rem;
+      --radius-md: 1rem;
+      --container: 1280px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(249,115,22,0.20), transparent 28%),
+        radial-gradient(circle at bottom, rgba(251,146,60,0.10), transparent 34%),
+        linear-gradient(180deg, #fff7ed 0%, #ffffff 48%, #fff7ed 100%);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(249,115,22,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(249,115,22,0.05) 1px, transparent 1px);
+      background-size: 120px 120px;
+      opacity: 0.35;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      text-decoration: none; 
+      color: inherit;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .nav-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 14px 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(18px);
+      border-radius: 999px;
+      box-shadow: 0 8px 30px rgba(249,115,22,0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      letter-spacing: 0.35em;
+    }
+
+    .brand-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.45;
+      margin-top: 4px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .nav a:hover {
+      color: var(--orange);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 140px 0 40px;
+    }
+
+    .glow {
+      position: absolute;
+      left: 50%;
+      top: 80px;
+      transform: translateX(-50%);
+      width: 28rem;
+      height: 28rem;
+      border-radius: 50%;
+      background: rgba(249, 115, 22, 0.18);
+      filter: blur(70px);
+      pointer-events: none;
+      animation: floatGlow 8s ease-in-out infinite;
+    }
+
+    @keyframes floatGlow {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-30px); }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      align-items: center;
+      gap: 48px;
+      width: min(1280px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(249,115,22,0.2);
+      background: var(--bg-soft);
+      color: var(--orange);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      font-weight: 300;
+    }
+
+    .hero h1 span {
+      display: block;
+      opacity: 0.68;
+    }
+
+    .hero p.lead {
+      margin-top: 28px;
+      max-width: 680px;
+      font-size: 18px;
+      line-height: 1.8;
+      opacity: 0.65;
+    }
+
+    .button-row {
+      margin-top: 36px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: white;
+      border: 1px solid rgba(249,115,22,0.25);
+      box-shadow: 0 12px 32px rgba(249,115,22,0.22);
+    }
+
+    .btn-primary:hover {
+      background: var(--orange-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 1px solid rgba(249,115,22,0.2);
+      color: rgba(27,27,27,0.8);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      border-color: rgba(249,115,22,0.35);
+      color: var(--orange);
+    }
+
+    .hero-card {
+      position: relative;
+    }
+
+    .hero-card-inner {
+      position: relative;
+      overflow: hidden;
+      padding: 12px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: white;
+      box-shadow: var(--shadow-strong);
+      transform: perspective(1200px) rotateY(-5deg);
+      transition: transform 0.4s ease;
+    }
+
+    .hero-card-inner:hover {
+      transform: perspective(1200px) rotateY(0deg) translateY(-4px);
+      
+    }
+
+    .hero-card-media {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+    }
+
+    .hero-card-media img,
+    .project-card i mg,
+    .gallery-item img,
+    .split-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.45), rgba(0,0,0,0.1), transparent);
+    }
+
+    .overlay-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 24px;
+      color: white;
+    }
+
+    .overlay-content .tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      opacity: 0.8;
+    }
+
+    .overlay-content h2,
+    .overlay-content h3 {
+      margin-top: 12px;
+      font-weight: 300;
+    }
+
+    .overlay-content h2 {
+      font-size: 32px;
+    }
+
+    .overlay-content p {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.7;
+      opacity: 0.84;
+      max-width: 420px;
+    }
+
+    .panel {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(40px) scale(0.98);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .section-lines {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      opacity: 0.4;
+      overflow: hidden;
+    }
+
+    .section-lines::before,
+    .section-lines::after,
+    .section-lines .line-h,
+    .section-lines .line-v {
+      content: "";
+      position: absolute;
+      background: linear-gradient(to right, transparent, rgba(249,115,22,0.4), transparent);
+    }
+
+    .section-lines::before {
+      top: 16%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+    }
+
+    .section-lines::after {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      opacity: 0.55;
+    }
+
+    .section-lines .line-h {
+      top: 82%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      opacity: 0.8;
+    }
+
+    .section-lines .line-v {
+      top: 0;
+      left: 10%;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(249,115,22,0.3), transparent);
+    }
+
+    .section-lines .line-v.right {
+      left: auto;
+      right: 10%;
+      opacity: 0.75;
+    }
+
+    .section-head {
+      margin-bottom: 48px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.32em;
+      color: var(--orange);
+    }
+
+    .section-title {
+      margin-top: 14px;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 64px;
+      position: relative;
+    }
+
+    .service-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover,
+    .project-card:hover,
+    .gallery-item:hover {
+      transform: translateY(-8px);
+    }
+
+    .card-line {
+      width: 64px;
+      height: 1px;
+      background: rgba(249,115,22,0.25);
+      margin-bottom: 20px;
+      transition: 0.3s ease;
+    }
+
+    .card:hover .card-line {
+      width: 96px;
+      background: rgba(249,115,22,0.7);
+    }
+
+    .card h3 {
+      font-size: 24px;
+      font-weight: 300;
+    }
+
+    .card p {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.8;
+      opacity: 0.65;
+    }
+
+    .projects-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 42px;
+    }
+
+    .projects-top .intro {
+      max-width: 520px;
+      font-size: 14px;
+      line-height: 1.8;
+      opacity: 0.58;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.9);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .project-media {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .project-media img,
+    .gallery-item img {
+      transition: transform 0.7s ease;
+    }
+
+    .project-card:hover .project-media img,
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .project-body {
+      padding: 24px;
+    }
+
+    .project-body p {
+      font-size: 14px;
+      line-height: 1.8;
+      opacity: 0.65;
+    }
+
+    .gallery-head {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 1.75rem;
+      border: 1px solid rgba(249,115,22,0.12);
+      background: white;
+      box-shadow: 0 10px 30px rgba(249,115,22,0.06);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item .media {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+    }
+
+    .split-content {
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.85);
+      padding: 40px;
+      box-shadow: var(--shadow);
+    }
+
+    .split-content p {
+      margin-top: 20px;
+      max-width: 720px;
+      font-size: 18px;
+      line-height: 1.8;
+      opacity: 0.65;
+    }
+
+    .split-image {
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: white;
+      box-shadow: var(--shadow);
+      min-height: 100%;
+    }
+
+    .contact {
+      padding: 40px 0 100px;
+    }
+
+    .contact-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2.25rem;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(249,115,22,0.12), rgba(255,255,255,0.92));
+      box-shadow: 0 16px 50px rgba(249,115,22,0.10);
+      padding: 48px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 32px;
+      align-items: center;
+      position: relative;
+    }
+
+    .contact-copy p {
+      margin-top: 18px;
+      max-width: 560px;
+      font-size: 18px;
+      line-height: 1.8;
+      opacity: 0.65;
+    }
+
+    .form {
+      display: grid;
+      gap: 16px;
+      padding: 24px;
+      border-radius: 1.75rem;
+      border: 1px solid rgba(249,115,22,0.12);
+      background: rgba(255,255,255,0.8);
+    }
+
+    .form input,
+    .form textarea {
+      width: 100%;
+      border: 1px solid rgba(249,115,22,0.1);
+      background: white;
+      color: var(--text);
+      padding: 14px 16px;
+      border-radius: 1rem;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form input::placeholder,
+    .form textarea::placeholder {
+      color: rgba(27,27,27,0.35);
+    }
+
+    .form textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+    .reveal-delay-4 { transition-delay: 0.32s; }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .services-grid,
+      .portfolio-grid,
+      .projects-grid,
+      .split-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .projects-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 130px;
+      }
+
+      .hero p.lead,
+      .split-content p,
+      .contact-copy p {
+        font-size: 16px;
+      }
+
+      .service-cards,
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-box,
+      .split-content,
+      .card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="nav-wrap">
+      <div class="brand">
+        <img src="ABC LOGO-01-01.png" alt="ABC Imaging logo" />
+        <div>
+          <div class="brand-title">ABC IMAGING</div>
+          <div class="brand-subtitle">Printing • Kiosks • Fabrication</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#about us">About Us</a>
+         <a href="#gallery">Gallery</a>
+         <a href="#services">Services</a>
+         <a href="#portfolio">Portfolio</a>
+         <a href="#projects">Projects</a>
+         <a href="#contact">Contact</a>
+      </nav>
+      </div>
+    </header>
+
+  <section class="hero">
+    <div class="section-lines">
+      <span class="line-h"></span>
+      <span class="line-v"></span>
+      <span class="line-v right"></span>
+    </div>
+    <div class="glow"></div>
+    <div class="hero-grid animate-on-scroll visible">
+      <div>
+        <div class="eyebrow">Real projects. Real presentation impact.</div>
+        <h1>
+          Printing and kiosk design,
+          <span>presented through built work.</span>
+        </h1>
+        <p class="lead">
+          ABC Imaging creates premium kiosks, branded environments, mall activations, and presentation spaces. This version uses your actual project visuals so the website feels less like a mockup and more like a real portfolio.
+        </p>
+        <div class="button-row">
+          <a href="#projects" class="btn btn-primary">View Portfolio</a>
+          <a href="#contact" class="btn btn-secondary">Start a Project</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-inner">
+          <div class="hero-card-media">
+            <img src="sobha renders (12).png" alt="Featured luxury kiosk project" />
+            <img src="damac.project-media.jpg" alt="Featured luxury kiosk project" />
+            <div class="overlay"></div>
+            <div class="overlay-content">
+              <div class="tag">Featured Project</div>
+              <h2>Luxury mall kiosk and activation environment</h2>
+              <p>
+                A more cinematic hero section built around one of your real renders, giving the site an immediate portfolio feel.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<section class="panel">
+    <div class="container animate-on-scroll">
+      
+      <div id="about us" class="about us -grid">
+        <div>
+          <div class="section-kicker">What We Do</div>
+          <h2 class="section-title">Design, print, build, and present.</h2>
+        </div>
+      
+        <div class="service-cards">
+          <article class="card animate-on-scroll">
+            <div class="card-line"></div>
+            <h3>Kiosk Design</h3>
+            <p>Custom kiosk concepts for malls, exhibitions, launches, and real estate presentations.</p>
+          </article>
+          <article class="card animate-on-scroll reveal-delay-1">
+            <div class="card-line"></div>
+            <h3>Large Format Printing</h3>
+            <p>Premium production for signage, panels, graphics, and branded environments.</p>
+          </article>
+          <article class="card animate-on-scroll reveal-delay-2">
+            <div class="card-line"></div>
+            <h3>Fabrication</h3>
+            <p>Spatial structures, display systems, and built features shaped around the client experience.</p>
+          </article>
+          <article class="card animate-on-scroll reveal-delay-3">
+            <div class="card-line"></div>
+            <h3>Visual Presentation</h3>
+            <p>Architectural models, screens, branded displays, and premium finishing details.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <section class="panel">
+    <div class="container animate-on-scroll">
+      <div class="section-lines">
+        <span class="line-h"></span>
+        <span class="line-v"></span>
+        <span class="line-v right"></span>
+      </div>
+      <div id="gallery">
+        <div class="gallery-head">
+          <div class="section-kicker">Project Gallery</div>
+          <h2 class="section-title">More of the visual language behind the brand.</h2>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-item animate-on-scroll reveal-delay-1"><div class="media"><img src="Binghatti renders  (3).png" alt="Gallery image 2" /></div></div>
+          <div class="gallery-item animate-on-scroll reveal-delay-2"><div class="media"><img src="damac renders (11).png" alt="Gallery image 3" /></div></div>
+          <div class="gallery-item animate-on-scroll"><div class="media"><img src="damac renders (3).png" alt="Gallery image 4" /></div></div>
+          <div class="gallery-item animate-on-scroll reveal-delay-1"><div class="media"><img src="Iman  (3).png" alt="Gallery image 5" /></div></div>
+           <div class="gallery-item animate-on-scroll reveal-delay-1"><div class="media"><img src="sobha renders (8).png" alt="Gallery image 5" /></div></div>
+          <div class="gallery-item animate-on-scroll reveal-delay-2"><div class="media"><img src="Iman  (10).png" alt="Gallery image 6" /></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+
+  <section class="panel">
+    <div class="container animate-on-scroll">
+      <div class="section-lines">
+        <span class="line-h"></span>
+        <span class="line-v"></span>
+        <span class="line-v right"></span>
+      </div>
+      <div id="services" class="services-grid">
+        <div>
+          <div class="section-kicker">What We Do</div>
+          <h2 class="section-title">Design, print, build, and present.</h2>
+        </div>
+        <div class="service-cards">
+          <article class="card animate-on-scroll">
+            <div class="card-line"></div>
+            <h3>Kiosk Design</h3>
+            <p>Custom kiosk concepts for malls, exhibitions, launches, and real estate presentations.</p>
+          </article>
+          <article class="card animate-on-scroll reveal-delay-1">
+            <div class="card-line"></div>
+            <h3>Large Format Printing</h3>
+            <p>Premium production for signage, panels, graphics, and branded environments.</p>
+          </article>
+          <article class="card animate-on-scroll reveal-delay-2">
+            <div class="card-line"></div>
+            <h3>Fabrication</h3>
+            <p>Spatial structures, display systems, and built features shaped around the client experience.</p>
+          </article>
+          <article class="card animate-on-scroll reveal-delay-3">
+            <div class="card-line"></div>
+            <h3>Visual Presentation</h3>
+            <p>Architectural models, screens, branded displays, and premium finishing details.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ <section class="panel">
+    <div class="container animate-on-scroll">
+      <div class="section-lines">
+        <span class="line-h"></span>
+        <span class="line-v"></span>
+        <span class="line-v right"></span>
+      </div>
+      <div id="portfolio" class="portfolio-grid">
+        
+        <div class="portfolio-cards">
+          <div class="container animate-on-scroll">
+      <div class="section-lines">
+        <span class="line-h"></span>
+        <span class="line-v"></span>
+        <span class="line-v right"></span>
+      </div>
+      <div class="split-grid">
+        <div class="split-content">
+          <div class="section-kicker">Why This Works Better</div>
+          <h2 class="section-title">Real images instantly make the site stronger.</h2>
+          <p>
+            Once the website starts using actual project visuals, the brand feels more credible, more specific, and much easier to trust. The site now reads as a design portfolio for a real printing and kiosk company, not just a styled landing page.
+          </p>
+        </div>
+        <div class="split-image">
+          <img src="anax renders 2.png" alt="Additional featured kiosk render" />
+        </div>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="container animate-on-scroll">
+      <div class="section-lines">
+        <span class="line-h"></span>
+        <span class="line-v"></span>
+        <span class="line-v right"></span>
+      </div>
+      <div id="projects">
+        <div class="projects-top">
+          <div>
+            <div class="section-kicker">Featured Projects</div>
+            <h2 class="section-title">Your work, placed directly into the website.</h2>
+          </div>
+          <p class="intro">
+            These sections now use the renders you uploaded, which makes the page feel much closer to a real company website instead of a generic concept layout.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card animate-on-scroll">
+            <div class="project-media">
+              <img src="anax renders 8.png" alt="ANAX Luxury Mall Kiosk" />
+              <div class="overlay"></div>
+              <div class="overlay-content">
+                <div class="tag">Kiosk Design &amp; Fabrication</div>
+                <h3>ANAX Luxury Mall Kiosk</h3>
+              </div>
+            </div>
+            <div class="project-body">
+              <p>A sculptural mall kiosk with a strong architectural presence, layered lighting, and a premium visitor experience.</p>
+            </div>
+          </article>
+
+          <article class="project-card animate-on-scroll reveal-delay-1">
+            <div class="project-media">
+              <img src="Binghatti renders  (5).png" alt="Binghatti Sales Pavilion" />
+              <div class="overlay"></div>
+              <div class="overlay-content">
+                <div class="tag">Branded Experience Design</div>
+                <h3>Binghatti Sales Pavilion</h3>
+              </div>
+            </div>
+            <div class="project-body">
+              <p>A clean, high-end branded environment with enclosed meeting space, digital display zones, and a presentation-ready model.</p>
+            </div>
+          </article>
+
+          <article class="project-card animate-on-scroll reveal-delay-2">
+            <div class="project-media">
+              <img src="damac renders (25).png" alt="DAMAC Luxury Display Kiosk" />
+              <div class="overlay"></div>
+              <div class="overlay-content">
+                <div class="tag">Spatial Branding</div>
+                <h3>DAMAC Luxury Display Kiosk</h3>
+              </div>
+            </div>
+            <div class="project-body">
+              <p>Warm materials, integrated screens, and refined detailing brought together in a compact but highly polished sales space.</p>
+            </div>
+          </article>
+
+          <article class="project-card animate-on-scroll reveal-delay-3">
+            <div class="project-media">
+              <img src="Iman  (2).png" alt="IMAN Lifestyle Installation" />
+              <div class="overlay"></div>
+              <div class="overlay-content">
+                <div class="tag">Retail Activation</div>
+                <h3>IMAN Lifestyle Installation</h3>
+              </div>
+            </div>
+            <div class="project-body">
+              <p>A softer, lifestyle-led kiosk concept built around greenery, calm seating, and a more boutique presentation style.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="contact-box animate-on-scroll">
+        <div class="section-lines">
+          <span class="line-h"></span>
+          <span class="line-v"></span>
+          <span class="line-v right"></span>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-copy">
+            <div class="section-kicker">Contact</div>
+            <h2 class="section-title">Let’s build your next branded space.</h2>
+            <p>
+              The layout is now image-ready and portfolio-led. The next step would be replacing demo contact details with your real business information and adding more categorized work if needed.
+            </p>
+          </div>
+
+          <form class="form">
+            <input type="text" placeholder="Name" />
+            <input type="email" placeholder="Email" />
+            <textarea rows="5" placeholder="Tell us about your project"></textarea>
+            <button type="button" class="btn btn-primary">Send Inquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
